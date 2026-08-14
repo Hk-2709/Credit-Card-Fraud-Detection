@@ -8,3 +8,8 @@ seaborn
 jupyter
 kaggle
 joblib
+torch
+fastapi
+uvicorn
+pydantic
+requests

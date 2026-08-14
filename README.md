@@ -1,16 +1,20 @@
-# Credit Card Fraud Detection
+# Credit Card Fraud Detection (MLOps & Deep Learning)
 
-This project demonstrates a robust machine learning pipeline to classify credit card transactions as fraudulent or legitimate. It addresses extreme class imbalance and evaluates models based on Precision-Recall AUC (PR-AUC) and cost-sensitive business metrics.
+This project demonstrates a robust machine learning pipeline to classify credit card transactions as fraudulent or legitimate. It addresses extreme class imbalance and evaluates models based on Precision-Recall AUC (PR-AUC). 
+
+It has been upgraded to a **Microservice Architecture** using **FastAPI** and **Docker**, and incorporates a **PyTorch Autoencoder** for unsupervised anomaly detection.
 
 ## Project Structure
 
 * `data/`: Contains the ULB Credit Card Fraud dataset (must be downloaded from Kaggle).
-* `notebooks/`: Contains the Jupyter notebook (`EDA_and_Modeling.ipynb`) used for exploratory data analysis, feature engineering, imbalance handling (SMOTE), and model training.
-* `models/`: Stores the trained models (e.g., `xgboost_fraud_model.pkl`) and scalers.
-* `app.py`: A Streamlit application for real-time fraud scoring.
-* `Project_Synopsis.md`: The formalized synopsis of the project.
+* `notebooks/`: Contains the Jupyter notebooks for EDA, SMOTE, XGBoost Modeling, and the Deep Learning Autoencoder.
+* `models/`: Stores the trained models (`xgboost_fraud_model.pkl`, `autoencoder.pth`) and scalers.
+* `api/`: Contains the FastAPI backend application (`main.py`).
+* `app.py`: A Streamlit application for real-time fraud scoring via the FastAPI backend.
+* `docker-compose.yml`: Orchestration file for Docker deployment.
+* `Dockerfile.api` & `Dockerfile.ui`: Docker build instructions for the services.
 
-## Instructions to Run
+## Instructions to Run (Locally)
 
 1. **Setup Environment**:
    ```bash
@@ -30,14 +34,19 @@ This project demonstrates a robust machine learning pipeline to classify credit 
    ```
 
 3. **Train Models**:
-   Open and execute the notebook in the `notebooks/` directory.
-   ```bash
-   jupyter notebook notebooks/EDA_and_Modeling.ipynb
-   ```
-   *Running this notebook will automatically save the trained XGBoost model and scalers to the `models/` directory.*
+   Open and execute the notebooks in the `notebooks/` directory to generate the `.pkl` and `.pth` models in `models/`.
 
-4. **Run the Streamlit App**:
-   Once the models are saved, start the simulator app.
-   ```bash
-   streamlit run app.py
-   ```
+4. **Run the Application (Microservices)**:
+   You need two terminal windows.
+   - **Terminal 1 (Backend)**: `uvicorn api.main:app --reload`
+   - **Terminal 2 (Frontend)**: `streamlit run app.py`
+
+## Instructions to Run (Docker)
+
+If you have Docker Desktop installed, you can spin up the entire application (both the FastAPI backend and Streamlit frontend) with a single command:
+
+```bash
+docker-compose up --build
+```
+- Streamlit UI will be available at: `http://localhost:8501`
+- FastAPI Docs will be available at: `http://localhost:8000/docs`
